@@ -6,6 +6,10 @@ export default class HelloWorld extends LightningElement {
     @track
     isChecked = false;
 
+    @track
+    cityList = ['Jaipur','Bangalore'];
+    
+
     changeMethod(event)
     {
         this.inputVar = event.target.value;

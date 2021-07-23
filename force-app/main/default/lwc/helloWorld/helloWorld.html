@@ -10,6 +10,13 @@
         <template if:false ={isChecked}>
             <h1>I am  not checked</h1>
         </template>
+        <template for:each ={cityList} for:item="city">
+            <h4 key={city}>{city}</h4>
+        </template>
+        <h3>Below is an example of iterator directive</h3>
+        <template iterator:it ={cityList}>
+            <h4 key={it.value}>{it.value}</h4>
+        </template>
         
     </lightning-card>
     
