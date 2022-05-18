@@ -1,0 +1,29 @@
+AggregateResult[] duplicatedAccounts = [SELECT Name, COUNT(Id)FROM Serial_number__c GROUP BY Name HAVING COUNT(Id) > 1];
+
+String generatedCSVFile ='';
+List<String> queryFields = new List<String>{'Name','Count'};
+String fileRow = '';
+for(AggregateResult a: duplicatedAccounts ){
+	fileRow = '';
+	fileRow = fileRow +','+ a.get('Name');
+	fileRow = fileRow +','+ a.get('expr0');
+	fileRow = fileRow.replaceFirst(',','');
+	generatedCSVFile = generatedCSVFile + fileRow + '\n';
+}
+
+
+System.debug(generatedCSVFile);
+
+Messaging.EmailFileAttachment csvAttachment = new Messaging.EmailFileAttachment();
+Blob csvBlob = blob.valueOf(generatedCSVFile);
+String csvName = 'Duplicate serial numbers.csv';
+csvAttachment.setFileName(csvName);
+csvAttachment.setBody(csvBlob);
+Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+String[] toAddresses = new String[]{'pulkit.singh@algoworks.com'};
+String subject = 'Duplicate Serial numbers';
+email.setSubject(subject);
+email.setToAddresses(toAddresses);
+email.setPlainTextBody('Duplicate Serial numbers');
+email.setFileAttachments(new Messaging.EmailFileAttachment[]{csvAttachment});
+Messaging.SendEmailResult[] r = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{email});
