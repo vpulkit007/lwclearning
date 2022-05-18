@@ -1,0 +1,43 @@
+public class AggregateBatchApex implements Database.Batchable<AggregateResult>,Iterable<AggregateResult>,Iterator<AggregateResult>{  
+    private List<AggregateResult> agg;
+    private Integer cuI;
+    public AggregateBatchApex()
+    {
+       cui = 0;
+    }
+    
+    public Iterator<AggregateResult> iterator()
+    {
+        return this;
+    }
+    public boolean hasNext()
+    {
+        return cui<agg.size()-1;
+    }
+    
+    public AggregateResult next()
+    {
+        if(cui<agg.size())
+        {
+        	return agg[cui++];    
+        }
+        return null;
+        
+    }
+    
+    public Iterable<AggregateResult> start(Database.BatchableContext bc)
+    {
+     	agg = [Select count(id),name from Account group by name];   
+        return agg;
+    }
+    
+    public void execute(Database.BatchableContext bc,List<AggregateResult> scope)
+    {
+        
+    }
+    public void finish(Database.BatchableContext bc)
+    {
+        
+    }
+
+}
