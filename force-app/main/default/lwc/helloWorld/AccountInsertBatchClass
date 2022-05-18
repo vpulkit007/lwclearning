@@ -1,0 +1,33 @@
+public class AccountInsertBatchClass implements Database.Batchable<Account>,Iterable<Account>, Iterator<Account>  {
+    
+    Integer counter = 0, max;
+    // How high to count to
+    public AccountInsertBatchClass(Integer max) {
+        this.max = max;
+    }
+    // Iterator to use
+    public Iterator<Account> iterator() {
+        return this;
+    }
+    // Get next account record in iterator
+    public Account next() {
+        return new Account(Name='Arijit_batch_'+counter++);
+    }
+    // Any more accounts to do
+    public Boolean hasNext() {
+        return counter < max;
+    }
+    // Database.Batchable start method
+    public Iterable<Account> start(Database.BatchableContext context) {
+        return this;
+    }
+    // Database.Batchable execute method
+    public void execute(Database.BatchableContext context, Account[] scope) {
+        insert scope;
+    }
+    // Database.Batchable finish method
+    public void finish(Database.BatchableContext context) {
+
+    }
+
+}
