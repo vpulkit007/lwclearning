@@ -1,0 +1,17 @@
+public class AccountBatchClass implements Database.Batchable<sobject> {
+    
+    public Database.QueryLocator start(Database.BatchableContext bc)
+    {
+        return Database.getQueryLocator('Select id,name from Account');
+    }
+    
+    public void execute(Database.BatchableContext bc,List<Account> accs)
+    {
+        
+    }
+    public void finish(Database.BatchableContext bc)
+    {
+        
+    }
+
+}
